@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Edvardas Gečas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap">
+<style>
+/* Layout: investor one-pager. Hero with a facts column, three project rows with the same
+   problem / build / looking-for structure, then background and contact. */
+:root {
+  --bg: #f2f5f4;
+  --panel: #e5edec;
+  --fg: #12262a;
+  --muted: #4f6467;
+  --line: #c9d7d6;
+  --accent: #b6412c;
+  --accent-fg: #ffffff;
+  --font-display: "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1b1e;
+    --panel: #132528;
+    --fg: #e6eeee;
+    --muted: #96abad;
+    --line: #26393c;
+    --accent: #ff8f75;
+    --accent-fg: #0d1b1e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1b1e;
+  --panel: #132528;
+  --fg: #e6eeee;
+  --muted: #96abad;
+  --line: #26393c;
+  --accent: #ff8f75;
+  --accent-fg: #0d1b1e;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 48px;
+}
+.wrap { max-width: 1040px; margin: 0 auto; }
+a { color: var(--fg); text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a:hover { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.1; }
+p { margin: 0; }
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; border-bottom: 1px solid var(--line); }
+.brand { font-family: var(--font-display); font-weight: 600; font-size: 16px; letter-spacing: .01em; }
+.lang { display: flex; gap: 4px; }
+.lang button {
+  font: 500 13px/1 var(--font-mono); letter-spacing: .06em;
+  min-width: 44px; min-height: 36px; padding: 0 10px;
+  background: transparent; color: var(--muted); border: 1px solid var(--line); border-radius: 3px; cursor: pointer;
+}
+.lang button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 40px 56px; padding-block: 56px 48px; align-items: start; }
+.eyebrow { font: 500 12px/1.4 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.hero h1 { font-size: clamp(40px, 7vw, 68px); font-weight: 700; letter-spacing: -.02em; }
+.role { font-family: var(--font-display); font-size: clamp(20px, 3vw, 26px); font-weight: 500; margin-top: 14px; color: var(--fg); }
+.pitch { margin-top: 18px; max-width: 56ch; color: var(--muted); font-size: 18px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.btn {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
+  font: 600 15px/1 var(--font-body); text-decoration: none; border-radius: 3px;
+  border: 1px solid var(--fg); color: var(--fg); background: transparent;
+}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+.btn:hover { color: inherit; border-color: var(--accent); }
+.btn.primary:hover { color: var(--accent-fg); filter: brightness(1.08); }
+
+.facts { margin: 0; padding: 22px 22px 6px; background: var(--panel); border-top: 3px solid var(--accent); }
+.facts div { padding-block: 12px; border-bottom: 1px solid var(--line); }
+.facts div:last-child { border-bottom: 0; }
+.facts dt { font: 500 12px/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 4px 0 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 1.15; font-variant-numeric: tabular-nums; }
+
+section { padding-block: 44px; border-top: 1px solid var(--line); }
+.sec-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; margin-bottom: 28px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 34px); font-weight: 700; letter-spacing: -.01em; }
+.sec-head p { color: var(--muted); max-width: 52ch; }
+
+.project { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 16px 40px; padding-block: 26px; border-top: 1px solid var(--line); }
+.project:first-of-type { border-top: 0; padding-top: 0; }
+.tag { display: inline-block; font: 500 12px/1.3 var(--font-mono); letter-spacing: .04em; color: var(--muted); border: 1px solid var(--line); padding: 4px 8px; border-radius: 2px; margin-bottom: 12px; }
+.project h3 { font-size: 26px; font-weight: 700; }
+.project dl { margin: 0; display: grid; gap: 16px; }
+.project dt { font: 500 12px/1.4 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.project dd { margin: 0; max-width: 64ch; }
+.project dd.ask { font-weight: 600; }
+
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 36px 48px; }
+.cols h3 { font-size: 20px; font-weight: 600; margin-bottom: 12px; }
+.roles, .plain { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.roles li { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 12px; }
+.roles .yr { font: 500 14px/1.7 var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.plain li { padding-left: 16px; position: relative; }
+.plain li::before { content: ""; position: absolute; left: 0; top: .72em; width: 6px; height: 2px; background: var(--accent); }
+
+.contact { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.row { display: grid; grid-template-columns: 7rem minmax(0, 1fr) auto; gap: 8px 16px; align-items: center; padding-block: 14px; border-bottom: 1px solid var(--line); }
+.row .k { font: 500 12px/1.4 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.row .v { font-family: var(--font-display); font-size: 20px; font-weight: 500; overflow-wrap: anywhere; user-select: all; }
+.row a.v { user-select: text; }
+.copy {
+  font: 500 13px/1 var(--font-mono); min-height: 40px; min-width: 76px; padding: 0 12px;
+  background: transparent; color: var(--fg); border: 1px solid var(--line); border-radius: 3px; cursor: pointer;
+}
+.copy:hover { border-color: var(--accent); }
+footer { padding-top: 28px; color: var(--muted); font-size: 14px; }
+
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 36px 32px; }
+  .project { grid-template-columns: minmax(0, 1fr); }
+  .row { grid-template-columns: minmax(0, 1fr) auto; }
+  .row .k { grid-column: 1 / -1; }
+  .roles li { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Edvardas Gečas</div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="lang-en" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" id="lang-no" data-lang="no" aria-pressed="false">NO</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div>
+        <p class="eyebrow" data-k="eyebrow">Circular economy · Frøya, Norway</p>
+        <h1>Edvardas Gečas</h1>
+        <p class="role" data-k="role">Founder, Edvardas Gecas Gård og Tjenester</p>
+        <p class="pitch" data-k="pitch">I build and scale ventures that turn overlooked resources into measurable business value. Open to strategic partnerships, investment and industry collaboration on three projects in Norway.</p>
+        <div class="actions">
+          <a class="btn primary" id="act-mail" href="mailto:imgroup.eu@gmail.com" data-k="btnMail">Email me</a>
+          <a class="btn" id="act-li" href="https://www.linkedin.com/in/edvardas-ge%C4%8Das-8853b3429/" data-k="btnLi">LinkedIn profile</a>
+          <a class="btn" href="#cv" data-k="btnCv">Background / CV</a>
+        </div>
+      </div>
+      <dl class="facts">
+        <div><dt data-k="f1k">Leadership experience</dt><dd data-k="f1v">15+ years</dd></div>
+        <div><dt data-k="f2k">Revenue built</dt><dd data-k="f2v">€0 to €1.5M in 18 months</dd></div>
+        <div><dt data-k="f3k">Team led</dt><dd data-k="f3v">Up to 150 people</dd></div>
+        <div><dt data-k="f4k">Profitability gains</dt><dd data-k="f4v">Up to 60%</dd></div>
+      </dl>
+    </div>
+
+    <section>
+      <div class="sec-head">
+        <h2 data-k="projH">Three projects in Norway</h2>
+        <p data-k="projP">Each one is looking for specific partners. The line under “Looking for” says who.</p>
+      </div>
+
+      <article class="project">
+        <div>
+          <span class="tag" data-k="p2tag">Since March 2026 · on Frøya</span>
+          <h3 data-k="p2h">Salmon by-product valorization</h3>
+        </div>
+        <dl>
+          <div><dt data-k="lblProblem2">The problem</dt><dd data-k="p2a">Norway’s salmon industry uses about 94% of its raw material, yet roughly 36,000 tonnes of salmon blood are discarded every year.</dd></div>
+          <div><dt data-k="lblBuild2">What I am building</dt><dd data-k="p2b">Collection, logistics and early-stage processing that turn this stream into a reliable, traceable input for high-value uses such as heme iron, bioactive peptides, pet food and marine fertilizer, together with established processors and research institutions.</dd></div>
+          <div><dt data-k="lblAsk2">Looking for</dt><dd class="ask" data-k="p2c">Processors, feed companies and research institutions.</dd></div>
+          <div><dt data-k="lblCt">Contact</dt><dd><a href="mailto:salmonblood@pm.me">salmonblood@pm.me</a></dd></div>
+        </dl>
+      </article>
+
+      <article class="project">
+        <div>
+          <span class="tag" data-k="p3tag">In development · Norwegian production model</span>
+          <h3 data-k="p3h">Synbiotics for nutrition and feed</h3>
+        </div>
+        <dl>
+          <div><dt data-k="lblProblem3">The problem</dt><dd data-k="p3a">Up to 45% of fruit and berry processing volume ends up as by-product, while aquaculture and livestock face growing pressure to reduce antibiotic use.</dd></div>
+          <div><dt data-k="lblBuild3">What I am building</dt><dd data-k="p3b">A zero-waste biorefinery model that turns fruit and berry by-products into synbiotic formulations through controlled fermentation. Two markets: capsules and powders for human nutrition, and feed additives for aquaculture and livestock. Built to meet Mattilsynet and EU requirements from day one.</dd></div>
+          <div><dt data-k="lblAsk3">Looking for</dt><dd class="ask" data-k="p3c">Investors, feed producers, researchers and nutraceutical brands.</dd></div>
+          <div><dt data-k="lblCt">Contact</dt><dd><a href="mailto:synbiotics@pm.me">synbiotics@pm.me</a></dd></div>
+        </dl>
+      </article>
+
+      <article class="project">
+        <div>
+          <span class="tag" data-k="p1tag">Since 2025 · onboarding pilot builders</span>
+          <h3 data-k="p1h">SIP panel construction</h3>
+        </div>
+        <dl>
+          <div><dt data-k="lblProblem">The problem</dt><dd data-k="p1a">Norwegian builders and cabin developers face rising material costs and slow on-site build times.</dd></div>
+          <div><dt data-k="lblBuild">What I am building</dt><dd data-k="p1b">I bring EU-manufactured structural insulated panels (SIP) to the Norwegian hytte and prefab market, with the documentation builders require: CE marking, Norwegian-language product documentation, and SINTEF technical approval in progress.</dd></div>
+          <div><dt data-k="lblAsk">Looking for</dt><dd class="ask" data-k="p1c">Pilot builders, reference projects, distribution and OEM supply partners.</dd></div>
+          <div><dt data-k="lblCt">Contact</dt><dd><a href="mailto:nordicwoolsip@pm.me">nordicwoolsip@pm.me</a></dd></div>
+        </dl>
+      </article>
+    </section>
+
+    <section id="cv">
+      <div class="sec-head"><h2 data-k="bgH">Background</h2></div>
+      <div class="cols">
+        <div>
+          <h3 data-k="rolesH">Roles</h3>
+          <ul class="roles">
+            <li><span class="yr" data-k="y1">2023 – now</span><span data-k="r1">Founder, Edvardas Gecas Gård og Tjenester (self-employed)</span></li>
+            <li><span class="yr" data-k="y2">2020 – 2023</span><span data-k="r2">Managing director and owner. Grew the business from €0 to €1.5M in 18 months with a team of up to 150.</span></li>
+            <li><span class="yr" data-k="y3">2013 – 2014</span><span data-k="r3">Managing director and owner. Profitability up 10–12%.</span></li>
+            <li><span class="yr" data-k="y4">2012 – 2013</span><span data-k="r4">Managing director and owner. Procurement, suppliers and quality control.</span></li>
+            <li><span class="yr" data-k="y5">2009 – 2011</span><span data-k="r5">Managing director and owner. Production and sales operations.</span></li>
+            <li><span class="yr" data-k="y6">2006 – 2007</span><span data-k="r6">Managing director and owner. Large projects, budgets and EU standards.</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3 data-k="bringH">What I bring</h3>
+          <ul class="plain">
+            <li data-k="b1">Strategic planning that turns into execution</li>
+            <li data-k="b2">Business development and go-to-market design</li>
+            <li data-k="b3">Team building and performance management</li>
+            <li data-k="b4">Production, sales and procurement alignment</li>
+            <li data-k="b5">Budget, cost and supplier management</li>
+            <li data-k="b6">Quality and production management</li>
+          </ul>
+        </div>
+        <div>
+          <h3 data-k="eduH">Education and languages</h3>
+          <ul class="plain">
+            <li data-k="e1">Law, Kauno Kolegija</li>
+            <li data-k="e2">Theology, Telšiai Bishop Vincentas Borisevičius Priest Seminary</li>
+            <li data-k="l1">Lithuanian (native), Russian (fluent), English (B2), Norwegian (written)</li>
+            <li data-k="s1">Advisory: management consulting, business consulting, strategic planning</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-head">
+        <h2 data-k="ctH">Contact</h2>
+        <p data-k="ctP">The quickest way is email or phone. Copy buttons are here in case a link does not open.</p>
+      </div>
+      <div class="contact">
+        <div class="row">
+          <span class="k" data-k="kMail">Email</span>
+          <a class="v" id="v-mail" href="mailto:imgroup.eu@gmail.com">imgroup.eu@gmail.com</a>
+          <button type="button" class="copy" data-copy="imgroup.eu@gmail.com" data-k="copy">Copy</button>
+        </div>
+        <div class="row">
+          <span class="k" data-k="kTel">Phone</span>
+          <a class="v" id="v-tel" href="tel:+4748428872">+47 484 28 872</a>
+          <button type="button" class="copy" data-copy="+4748428872" data-k="copy">Copy</button>
+        </div>
+        <div class="row">
+          <span class="k">LinkedIn</span>
+          <a class="v" id="v-li" href="https://www.linkedin.com/in/edvardas-ge%C4%8Das-8853b3429/">linkedin.com/in/edvardas-gečas-8853b3429</a>
+          <button type="button" class="copy" data-copy="https://www.linkedin.com/in/edvardas-ge%C4%8Das-8853b3429/" data-k="copy">Copy</button>
+        </div>
+        <div class="row">
+          <span class="k" data-k="kLoc">Based in</span>
+          <span class="v" data-k="vLoc">Frøya, Trøndelag, Norway</span>
+          <span></span>
+        </div>
+      </div>
+      <footer data-k="foot">Edvardas Gečas · Frøya, Norway</footer>
+    </section>
+  </main>
+</div>
+
+<script>
+(function () {
+  var NO = {
+    eyebrow: "Sirkulærøkonomi · Frøya, Norge",
+    role: "Gründer, Edvardas Gecas Gård og Tjenester",
+    pitch: "Jeg bygger og skalerer virksomheter som gjør oversette ressurser om til målbar forretningsverdi. Åpen for strategiske partnerskap, investeringer og industrisamarbeid på tre prosjekter i Norge.",
+    btnMail: "Send e-post", btnLi: "LinkedIn-profil", btnCv: "Bakgrunn / CV",
+    f1k: "Ledererfaring", f1v: "15+ år",
+    f2k: "Omsetning bygget", f2v: "€0 til €1,5 mill. på 18 måneder",
+    f3k: "Team ledet", f3v: "Opptil 150 personer",
+    f4k: "Lønnsomhetsvekst", f4v: "Opptil 60 %",
+    projH: "Tre prosjekter i Norge",
+    projP: "Hvert prosjekt leter etter bestemte partnere. Linjen under «Jeg leter etter» sier hvem.",
+    lblProblem: "Problemet", lblBuild: "Det jeg bygger", lblAsk: "Jeg leter etter",
+    lblProblem2: "Problemet", lblBuild2: "Det jeg bygger", lblAsk2: "Jeg leter etter",
+    lblProblem3: "Problemet", lblBuild3: "Det jeg bygger", lblAsk3: "Jeg leter etter", lblCt: "Kontakt",
+    p1tag: "Siden 2025 · rekrutterer pilotbyggere",
+    p1h: "Bygging med SIP-paneler",
+    p1a: "Norske byggherrer og hytteutviklere møter økende materialkostnader og lang byggetid på byggeplassen.",
+    p1b: "Jeg tar inn EU-produserte strukturelle isolerte paneler (SIP) til det norske hytte- og prefabmarkedet, med dokumentasjonen byggherrer krever: CE-merking, produktdokumentasjon på norsk og SINTEF-godkjenning under arbeid.",
+    p1c: "Pilotbyggere, referanseprosjekter, distribusjons- og OEM-leveransepartnere.",
+    p2tag: "Siden mars 2026 · på Frøya",
+    p2h: "Verdiskaping av lakseblod og andre biprodukter",
+    p2a: "Norsk lakseindustri utnytter omtrent 94 % av råvaren, men rundt 36 000 tonn lakseblod kastes hvert år.",
+    p2b: "Innsamling, logistikk og tidlig prosessering som gjør denne strømmen til en pålitelig og sporbar innsatsfaktor til høyverdige bruksområder som hemjern, bioaktive peptider, kjæledyrmat og marin gjødsel, sammen med etablerte prosessører og forskningsmiljøer.",
+    p2c: "Prosessorer, fôrprodusenter og forskningsinstitusjoner.",
+    p3tag: "Under utvikling · norsk produksjonsmodell",
+    p3h: "Synbiotika til ernæring og fôr",
+    p3a: "Opptil 45 % av volumet i frukt- og bærforedling ender som biprodukt, samtidig som havbruk og husdyrhold møter økt press for å redusere bruken av antibiotika.",
+    p3b: "En bioraffineri-modell uten avfall som gjør biprodukter fra frukt og bær om til synbiotiske formuleringer gjennom kontrollert fermentering. To markeder: kapsler og pulver til human ernæring, og fôrtilsetninger til havbruk og husdyr. Bygget for å oppfylle krav fra Mattilsynet og EU fra første dag.",
+    p3c: "Investorer, fôrprodusenter, forskere og nutraceutiske merkevarer.",
+    bgH: "Bakgrunn", rolesH: "Roller",
+    y1: "2023 – nå", r1: "Gründer, Edvardas Gecas Gård og Tjenester (selvstendig)",
+    y2: "2020 – 2023", r2: "Daglig leder og eier. Bygget virksomheten fra €0 til €1,5 mill. på 18 måneder med et team på opptil 150.",
+    y3: "2013 – 2014", r3: "Daglig leder og eier. Lønnsomheten økte med 10–12 %.",
+    y4: "2012 – 2013", r4: "Daglig leder og eier. Innkjøp, leverandører og kvalitetskontroll.",
+    y5: "2009 – 2011", r5: "Daglig leder og eier. Produksjon og salg.",
+    y6: "2006 – 2007", r6: "Daglig leder og eier. Store prosjekter, budsjetter og EU-standarder.",
+    bringH: "Det jeg tilfører",
+    b1: "Strategisk planlegging som blir til gjennomføring",
+    b2: "Forretningsutvikling og utforming av go-to-market",
+    b3: "Teambygging og prestasjonsledelse",
+    b4: "Samkjøring av produksjon, salg og innkjøp",
+    b5: "Budsjett-, kostnads- og leverandørstyring",
+    b6: "Kvalitets- og produksjonsledelse",
+    eduH: "Utdanning og språk",
+    e1: "Jus, Kauno Kolegija",
+    e2: "Teologi, Telšiai Bishop Vincentas Borisevičius Priest Seminary",
+    l1: "Litauisk (morsmål), russisk (flytende), engelsk (B2), norsk (skriftlig)",
+    s1: "Rådgivning: ledelsesrådgivning, forretningsrådgivning, strategisk planlegging",
+    ctH: "Kontakt",
+    ctP: "Raskest er e-post eller telefon. Kopieringsknappene er der hvis en lenke ikke åpner seg.",
+    kMail: "E-post", kTel: "Telefon", kLoc: "Sted", vLoc: "Frøya, Trøndelag, Norge",
+    copy: "Kopier",
+    foot: "Edvardas Gečas · Frøya, Norge"
+  };
+
+  var nodes = document.querySelectorAll("[data-k]");
+  var i, EN = {};
+  for (i = 0; i < nodes.length; i++) { EN[nodes[i].getAttribute("data-k") + "#" + i] = nodes[i].textContent; }
+
+  var copyLabelTimers = [];
+
+  function apply(lang) {
+    var dict = lang === "no" ? NO : null;
+    for (var j = 0; j < nodes.length; j++) {
+      var key = nodes[j].getAttribute("data-k");
+      var orig = EN[key + "#" + j];
+      nodes[j].textContent = dict && dict[key] !== undefined ? dict[key] : orig;
+    }
+    document.documentElement.setAttribute("lang", lang);
+    document.getElementById("lang-en").setAttribute("aria-pressed", lang === "en" ? "true" : "false");
+    document.getElementById("lang-no").setAttribute("aria-pressed", lang === "no" ? "true" : "false");
+  }
+
+  function pick() {
+    try { var saved = localStorage.getItem("eg-lang"); if (saved === "en" || saved === "no") return saved; } catch (e) {}
+    var n = (navigator.language || "").toLowerCase();
+    return (n.indexOf("nb") === 0 || n.indexOf("no") === 0 || n.indexOf("nn") === 0) ? "no" : "en";
+  }
+
+  function setLang(lang) {
+    apply(lang);
+    try { localStorage.setItem("eg-lang", lang); } catch (e) {}
+  }
+
+  document.getElementById("lang-en").addEventListener("click", function () { setLang("en"); });
+  document.getElementById("lang-no").addEventListener("click", function () { setLang("no"); });
+
+  var btns = document.querySelectorAll("[data-copy]");
+  function selectNode(el) {
+    var row = el.closest(".row");
+    var target = row && row.querySelector(".v");
+    if (!target) return;
+    var r = document.createRange(); r.selectNodeContents(target);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  btns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var text = b.getAttribute("data-copy");
+      var done = function (ok) {
+        var no = document.documentElement.getAttribute("lang") === "no";
+        var orig = no ? NO.copy : "Copy";
+        b.textContent = ok ? (no ? "Kopiert" : "Copied") : (no ? "Markert" : "Selected");
+        if (!ok) selectNode(b);
+        setTimeout(function () { b.textContent = orig; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+      } else { done(false); }
+    });
+  });
+
+  apply(pick());
+})();
+</script>
+
+</body>
+</html>
